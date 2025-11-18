@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SunTennis — Dashboard</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    .dash { max-width: 920px; margin: 90px auto 40px; padding: 0 16px; }
+    .dash .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .pill { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:var(--ghost); }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/">Sun<span>Tennis</span></a>
+      <nav class="nav__links">
+        <a href="/tournament.html">Vezi turnee</a>
+          <a href="/program.html">Program</a>
+          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+        <a href="/admin.html" id="btnAdmin" style="display:none">Admin Panel</a>
+        <a href="#" id="btnLogout" class="btn btn--ghost">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="dash">
+    <h1>Dashboard</h1>
+    <p id="who">Se încarcă…</p>
+    <div class="row" style="margin-top:8px">
+      <span class="pill" id="rolePill">role: —</span>
+      <a class="btn btn--primary" href="/tournament.html">Vezi turneu</a>
+      <a class="btn btn--ghost" id="btnAdmin2" href="/admin.html" style="display:none">Admin Panel</a>
+    </div>
+  </main>
+
+  <script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  // Folosește ACELEAȘI valori care merg la login/register:
+  const SUPABASE_URL  = 'https://wguckoihzasopcbalsia.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndndWNrb2loemFzb3BjYmFsc2lhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MTIxMjgsImV4cCI6MjA3ODQ4ODEyOH0.ivWWLMAKoRWdbrnvozXvj8fimhu2-acABkRlg_CJfBU';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  const who = document.querySelector('#who');
+  const btnLogout = document.querySelector('#btnLogout');
+  const btnAdmin = document.querySelector('#btnAdmin');   // dacă ai
+  const btnAdmin2 = document.querySelector('#btnAdmin2'); // dacă ai
+  const rolePill = document.querySelector('#rolePill');   // dacă ai
+
+  let redirected = false;
+  const go = (url) => { if (redirected) return; redirected = true; window.location.replace(url); };
+
+  // 1) Guard sesiune (rulează o singură dată, prima linie efectivă)
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error) { console.error(error); }
+  if (!session) { go('/login.html'); throw new Error('No session'); }
+
+  // 2) Arată user + rol
+  who.textContent = session.user.email;
+  let role = 'user';
+  try {
+    const { data: prof } = await supabase
+      .from('profiles').select('role,email').eq('id', session.user.id).single();
+    role = prof?.role || 'user';
+    if (rolePill) rolePill.textContent = `role: ${role}`;
+    if (role === 'admin') {
+      if (btnAdmin)  btnAdmin.style.display = '';
+      if (btnAdmin2) btnAdmin2.style.display = '';
+    }
+  } catch(e) {
+    console.warn('profiles:', e?.message || e);
+  }
+
+  // 3) Logout stabil (o singură atașare)
+  btnLogout?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    try { await supabase.auth.signOut(); } catch(_) {}
+    go('/');
+  }, { once: true });
+
+  // 4) Ignoră schimbările de stare ulterioare (evită redirecturi “din alte scripturi”)
+  // NU face redirect aici; doar info/debug dacă vrei:
+  supabase.auth.onAuthStateChange((_event, _session) => {
+    // intentionally empty – prevenim dublu redirect dintr-un handler global
+  });
+</script>
+
+</body>
+</html>

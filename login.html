@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SunTennis — Login</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    .auth-page{min-height:100svh;display:grid;place-items:center;padding:24px}
+    .card-auth{width:min(420px,92vw);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 10px 30px #0006}
+    .card-auth h2{margin:0 0 10px}
+    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+    .field input{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#161624;color:var(--ink)}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/">Sun<span>Tennis</span></a>
+      <nav class="nav__links">
+        <a href="/tournament.html">Vezi turnee</a>
+          <a href="/program.html">Program</a>
+          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+        <a href="/register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <form class="card-auth" id="loginForm">
+      <h2>Login</h2>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" required placeholder="you@email.com" />
+      </div>
+      <div class="field">
+        <label for="pass">Parolă</label>
+        <input id="pass" type="password" minlength="6" required placeholder="••••••••" />
+      </div>
+      <button class="btn btn--primary w-100" type="submit">Intră</button>
+      <p class="muted">Nu ai cont? <a class="link" href="/register.html">Creează cont</a></p>
+      <p id="msg" class="muted"></p>
+    </form>
+  </main>
+
+  <script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // ⬇️ PUNE-ȚI VALORILE REALE DE LA Supabase → Settings → API
+ const SUPABASE_URL  = 'https://wguckoihzasopcbalsia.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndndWNrb2loemFzb3BjYmFsc2lhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MTIxMjgsImV4cCI6MjA3ODQ4ODEyOH0.ivWWLMAKoRWdbrnvozXvj8fimhu2-acABkRlg_CJfBU';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  const msg = document.querySelector('#msg');
+  msg.textContent = 'JS inline OK ✔';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) { window.location.href = '/dashboard.html'; }
+  } catch (e) {
+    console.error(e);
+    msg.textContent = 'Eroare sesiune: ' + (e?.message || e);
+  }
+
+  const form = document.querySelector('#loginForm');
+  const email = document.querySelector('#email');
+  const pass  = document.querySelector('#pass');
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    msg.textContent = 'Se verifică…';
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.value.trim(),
+        password: pass.value
+      });
+      if (error) { msg.textContent = error.message; return; }
+      window.location.href = '/dashboard.html';
+    } catch (err) {
+      console.error(err);
+      msg.textContent = 'Eroare de autentificare.';
+    }
+  });
+</script>
+
+</body>
+</html>

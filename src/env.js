@@ -1,0 +1,6 @@
+// src/env.js – variantă simplă, fără .env.local
+
+export const ENV = {
+  VITE_SUPABASE_URL: 'https://wguckoihzasopcbalsia.supabase.co',
+  VITE_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndndWNrb2loemFzb3BjYmFsc2lhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MTIxMjgsImV4cCI6MjA3ODQ4ODEyOH0.ivWWLMAKoRWdbrnvozXvj8fimhu2-acABkRlg_CJfBU',
+};

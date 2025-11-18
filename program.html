@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SunTennis — Program</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/">Sun<span>Tennis</span></a>
+      <nav class="nav__links">
+        <a href="/">Acasă</a>
+        <a href="/tournament.html">Vezi turnee</a>
+          <a href="/program.html">Program</a>
+          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+          <a href="/login.html" class="btn btn--primary">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container section">
+    <h2>Program meciuri — toate categoriile</h2>
+    <p style="color:#aeb3bd;font-size:0.9rem">
+      Program combinat pentru Categorie 1 și Categorie 2.
+    </p>
+    <div id="programList"></div>
+  </main>
+
+  <script type="module" src="/src/program.js"></script>
+</body>
+</html>

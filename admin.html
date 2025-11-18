@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SunTennis — Admin</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/">Sun<span>Tennis</span></a>
+      <nav class="nav__links">
+        <a href="/">Acasă</a>
+        <a href="/tournament.html">Vezi turnee</a>
+          <a href="/program.html">Program</a>
+          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+         
+
+      </nav>
+    </div>
+  </header>
+<main class="container section">
+  <h2>Admin — Tennis Club Sun Noiembrie</h2>
+  <p id="roleNote" style="color:#aeb3bd"></p>
+
+  <!-- SELECTOR CATEGORIE -->
+  <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <a href="/admin.html"
+       class="btn btn--ghost"
+       id="cat1Btn">
+      Categorie 1
+    </a>
+    <a href="/admin.html?cat=2"
+       class="btn btn--ghost"
+       id="cat2Btn">
+      Categorie 2
+    </a>
+  </div>
+
+
+  <!-- SETĂRI TURNEU -->
+  <article class="card" style="margin-bottom:12px">
+    <h3 style="margin:0 0 10px">Setări turneu</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <label>Format
+        <select id="format">
+          <option value="elimination">Eliminatoriu</option>
+          <option value="groups">Grupe (șah)</option>
+        </select>
+      </label>
+
+      <label>Tablou (putere a lui 2)
+        <input id="bracket" type="number" min="2" step="2" value="8" />
+      </label>
+
+      <label>Nr. grupe
+        <input id="groupCount" type="number" min="1" value="2" />
+      </label>
+      <label>Echipe/grupă
+        <input id="groupSize" type="number" min="2" value="4" />
+      </label>
+
+      <button id="saveTournament" class="btn btn--primary" type="button">
+        Salvează setări
+      </button>
+      <button id="genGroupSlots" class="btn btn--ghost" type="button">
+        Generează grile goale
+      </button>
+    </div>
+  </article>
+
+  <!-- TABLOU GRUPE - ADMIN EDITOR -->
+  <article class="card" style="margin-bottom:12px">
+    <h3 style="margin:0 0 10px">Tablou grupe (editor admin)</h3>
+    <p style="color:#aeb3bd;font-size:0.9rem;margin-bottom:8px">
+      După ce ai generat grilele, scrie numele echipelor direct în coloana „Nume”.
+    </p>
+    <div id="groupsEditor"></div>
+  </article>
+
+  <!-- ECHIPE (opțional, mai ales pentru tablou eliminatoriu) -->
+  <!-- <article class="card" style="margin-bottom:12px">
+    <h3 style="margin:0 0 10px">Echipe (listă simplă)</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <input id="p1" placeholder="Jucător 1" />
+      <input id="p2" placeholder="Jucător 2" />
+      <button id="addTeam" class="btn btn--ghost" type="button">Adaugă</button>
+    </div>
+    <div id="teamsList"></div>
+  </article> -->
+
+  <!-- PROGRAM & SCORURI -->
+  <article class="card">
+    <h3 style="margin:0 0 10px">Program & scoruri</h3>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <label>Rundă
+        <input id="matchRound" type="number" min="0" value="1" />
+      </label>
+
+      <label>Grupă (opțional)
+        <input id="matchGroup" placeholder="A" />
+      </label>
+
+      <label>Echipa 1
+        <select id="matchTeam1"></select>
+      </label>
+
+      <label>Echipa 2
+        <select id="matchTeam2"></select>
+      </label>
+
+      <label>Data/Ora
+        <input id="matchDate" type="datetime-local" />
+      </label>
+
+      <label>Teren
+        <input id="matchCourt" placeholder="Teren 1" />
+      </label>
+
+      <button id="addMatch" class="btn btn--primary" type="button">
+        Adaugă meci
+      </button>
+    </div>
+
+    <button id="deleteAllMatches" class="btn btn--ghost" type="button">
+  Șterge toate meciurile
+    </button>
+
+    <button id="autoGroupMatches" class="btn btn--ghost" type="button">
+  Generează meciuri de grupe
+</button>
+
+  <!-- <div id="groupsEditor"></div> -->
+
+
+    <div id="matchesList"></div>
+
+  </article>
+  
+
+
+
+ <article class="card" id="elimEditorCard" style="margin-bottom:12px;display:none">
+  <h3 style="margin:0 0 10px">Tablou eliminatoriu (editor admin)</h3>
+  <p style="color:#aeb3bd;font-size:0.9rem;margin-bottom:8px">
+    Generează sloturile, apoi scrie numele echipelor direct în căsuțele din tablou.
+  </p>
+
+  <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+    <button id="genElimSlots" class="btn btn--ghost" type="button">
+      Generează sloturi tablou
+    </button>
+    <button id="autoElimMatches" class="btn btn--ghost" type="button">
+      Generează meciuri primul tur
+    </button>
+  </div>
+
+  <!-- aici desenăm tabloul -->
+  <div id="elimBracketEditor"></div>
+</article>
+
+</article>
+
+</main>
+
+<script type="module" src="/src/admin.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SunTennis — Turnee de tenis</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <header class="nav">
+      <div class="container nav__inner">
+        <a class="logo" href="/">Sun<span>Tennis</span></a>
+
+        <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <nav class="nav__links" data-menu>
+          <a href="/tournament.html">Vezi turnee</a>
+          <a href="/program.html">Program</a>
+          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+          <a href="/login.html" class="btn btn--primary">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- PAGINA PRINCIPALĂ SIMPLĂ -->
+    <main class="hero" role="img" aria-label="Copertă turneu de tenis">
+      <div class="hero__overlay"></div>
+
+      <div class="container hero__inner" style="align-items:center;gap:32px">
+        <!-- Text -->
+        <div class="hero__text">
+          <h1>Tenis Club Sun</h1>
+          <p class="sub">
+      
+          </p>
+          <p style="max-width:40rem;color:#aeb3bd;font-size:0.95rem">
+            
+          </p>
+
+          <div class="hero__cta" style="margin-top:16px">
+            <a href="/tournament.html" class="btn btn--primary">Vezi turneele active</a>
+            <a href="/program.html" class="btn btn--ghost">Vezi programul meciurilor</a>
+          </div>
+        </div>
+
+        <!-- Imagine copertă -->
+        <!-- Imagine copertă -->
+<div class="hero__image" aria-hidden="true">
+  <img
+    src="/TCSunAlb.png"
+    alt="Teren de tenis pe zgură văzut din spatele fileului"
+    style="max-width:120px;width:100%;border-radius:24px;display:block;object-fit:cover;box-shadow:0 20px 20px rgba(0,0,0,0.4)"
+  />
+</div>
+
+      </div>
+    </main>
+
+    <!-- AUTH MODAL (poți să-l păstrezi dacă main.js îl folosește) -->
+    <div id="authModal" class="auth is-hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="auth__backdrop" data-close></div>
+      <form class="auth__card" id="authForm">
+        <div class="auth__head">
+          <h3 id="authTitle">Login</h3>
+          <button class="auth__close" aria-label="Close" type="button" data-close>✕</button>
+        </div>
+        <div class="auth__tabs">
+          <button type="button" class="auth__tab auth__tab--active" data-mode="login">Login</button>
+          <button type="button" class="auth__tab" data-mode="register">Register</button>
+        </div>
+        <label class="auth__field">
+          <span>Email</span>
+          <input id="authEmail" type="email" required placeholder="you@email.com" />
+        </label>
+        <label class="auth__field">
+          <span>Parolă</span>
+          <input id="authPass" type="password" minlength="6" required placeholder="••••••••" />
+        </label>
+        <button id="authSubmit" class="btn btn--primary w-100" type="submit">Continuă</button>
+        <p class="auth__hint">Minim 6 caractere pentru parolă.</p>
+      </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <small>© <span id="year"></span> SunTennis</small>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,688 @@
+
+:root{
+  --bg:#0a0a0f; --bg-2:#0e0e15; --ink:#f3f5f8; --muted:#aeb3bd;
+  --card:#13131c; --border:#232335; --accent:#9EEA63; --accent-ink:#0b1b0b;
+  --primary:#9EEA63; --ghost:#ffffff0f;
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg) 0%, var(--bg-2) 100%)}
+img{max-width:100%;display:block}
+
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:rgba(10,10,15,.7);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.nav__inner{display:flex;align-items:center;justify-content:space-between;min-height:64px}
+.logo{color:var(--ink);text-decoration:none;font-weight:800;font-size:20px;letter-spacing:.3px}
+.logo span{color:var(--primary)}
+.nav__links{display:flex;gap:14px;align-items:center}
+.nav__links a{color:var(--ink);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:10px}
+.nav__links a:hover{background:var(--ghost)}
+.nav__toggle{display:none;background:none;border:none;color:var(--ink)}
+.btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid transparent;text-decoration:none;font-weight:700;cursor:pointer}
+.btn--primary{background:var(--primary);color:#0b1d0b;border-color:var(--primary)}
+.btn--ghost{background:var(--ghost);border:1px solid var(--border);color:var(--ink)}
+.btn--sm{padding:8px 10px;border-radius:10px}
+.w-100{width:100%}
+
+/* HERO */
+.hero {
+  background-image: url('/court.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* .hero::before{ /* fallback online image dacă nu există /public/hero.jpg */
+  /* content:"";position:absolute;inset:0;z-index:-2;
+  background:center/cover no-repeat url('https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600&auto=format&fit=crop');
+  filter:saturate(1.1) contrast(1.05);
+} */ 
+.hero__overlay{position:absolute;inset:0;background:linear-gradient(90deg,#0a0a0fb3 0%, #0a0a0f66 45%, transparent 75%), radial-gradient(60% 60% at 10% 10%, rgba(158,234,99,.18), transparent 60%);z-index:-1}
+.hero__inner{display:grid;grid-template-columns:1.1fr .9fr;align-items:end;gap:24px;padding:64px 0 36px}
+.hero__text .eyebrow{color:var(--primary);font-weight:700;letter-spacing:.6px;margin:0 0 8px}
+.hero__text h1{margin:0 0 10px;font-size:clamp(28px,5vw,56px);line-height:1.05}
+.hero__text h1 span{color:var(--primary)}
+.hero__text .sub{color:var(--muted);max-width:60ch;margin:0 0 16px}
+.hero__cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Event card */
+.eventcard{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;max-width:420px;margin-left:auto;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.eventcard__img{height:180px;object-fit:cover;width:100%}
+.eventcard__body{padding:14px}
+.eventcard__body h3{margin:4px 0 8px}
+.eventcard__meta{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-weight:600}
+.eventcard__badge{position:absolute;transform:translate(12px,12px);background:var(--primary);color:#0b1d0b;font-weight:800;border-radius:999px;padding:6px 10px;font-size:12px}
+
+/* STATS */
+.stats{background:#0e0e15;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:20px 0}
+.stat{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center}
+.stat__num{font-size:clamp(22px,4vw,32px);font-weight:800}
+.stat__label{color:var(--muted);font-weight:600}
+
+/* SECTIONS */
+.section{padding:32px 0}
+.section__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.link{color:var(--primary);text-decoration:none;font-weight:700}
+.link:hover{text-decoration:underline}
+
+/* CARDS list */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.card h3{margin:0}
+.card p{color:var(--muted);margin:0}
+
+/* ABOUT + FOOTER */
+.about{padding:28px 0 40px}
+.about__wrap{display:flex;gap:24px}
+.footer{padding:22px 0;border-top:1px solid var(--border);color:var(--muted)}
+
+/* RESPONSIVE */
+@media (max-width: 900px){
+  .hero__inner{grid-template-columns:1fr;align-items:center}
+  .eventcard{order:-1;margin:0 auto}
+}
+@media (max-width: 720px){
+  .nav__toggle{display:block}
+  .nav__links{position:absolute;right:16px;top:64px;background:rgba(14,14,21,.98);border:1px solid var(--border);border-radius:14px;padding:10px;display:none;flex-direction:column;min-width:200px}
+  .nav__links.show{display:flex}
+  .nav__links a{padding:10px 12px}
+  .stats__grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 420px){
+  .stats__grid{grid-template-columns:1fr}
+}
+
+
+
+
+/* AUTH MODAL */
+.auth{border:none;padding:0;background:transparent}
+.auth::backdrop{background:#0008;backdrop-filter:blur(2px)}
+.auth__card{width:min(420px,90vw);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px #0008}
+.auth__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.auth__close{background:none;border:none;color:var(--ink);font-size:18px;cursor:pointer}
+.auth__tabs{display:flex;gap:8px;margin:8px 0 12px}
+.auth__tab{flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--ghost);color:var(--ink);cursor:pointer;font-weight:700}
+.auth__tab--active{background:var(--primary);border-color:var(--primary);color:#0b1d0b}
+.auth__field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.auth__field input{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#161624;color:var(--ink)}
+.auth__hint{color:var(--muted);font-size:12px;margin:8px 0 0}
+
+
+
+
+
+
+/* --- AUTH MODAL FIXES (fallback & z-index) --- */
+.auth{ border:none; padding:0; background:transparent; z-index:1000; }
+.auth[open]{ display:block; }           /* fallback pt. browsere fără <dialog> */
+.auth::backdrop{ background:#0008; backdrop-filter:blur(2px); }
+
+.auth__card{ width:min(420px,90vw); background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:16px; box-shadow:0 10px 30px #0008; }
+.auth__head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.auth__close{ background:none; border:none; color:var(--ink); font-size:18px; cursor:pointer; }
+
+.auth__tabs{ display:flex; gap:8px; margin:8px 0 12px; }
+.auth__tab{ flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--border);
+  background:var(--ghost); color:var(--ink); cursor:pointer; font-weight:700; }
+.auth__tab--active{ background:var(--primary); border-color:var(--primary); color:#0b1d0b; }
+
+.auth__field{ display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
+.auth__field input{ padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:#161624; color:var(--ink); }
+.auth__hint{ color:var(--muted); font-size:12px; margin:8px 0 0; }
+
+/* === AUTH OVERLAY (div-based, cross-browser) === */
+.auth{position:fixed; inset:0; display:grid; place-items:center; z-index:1000;}
+.auth.is-hidden{display:none;}
+.auth__backdrop{position:absolute; inset:0; background:#0008; backdrop-filter:blur(2px);}
+.auth__card{position:relative; width:min(420px,90vw); background:var(--card);
+  border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:0 10px 30px #0008;}
+.auth__head{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+.auth__close{background:none; border:none; color:var(--ink); font-size:18px; cursor:pointer}
+.auth__tabs{display:flex; gap:8px; margin:8px 0 12px}
+.auth__tab{flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--border);
+  background:var(--ghost); color:var(--ink); cursor:pointer; font-weight:700}
+.auth__tab--active{background:var(--primary); border-color:var(--primary); color:#0b1d0b}
+.auth__field{display:flex; flex-direction:column; gap:6px; margin-bottom:10px}
+.auth__field input{padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:#161624; color:var(--ink)}
+.auth__hint{color:var(--muted); font-size:12px; margin:8px 0 0}
+/* ───── Grile grupe (șah) ───── */
+
+.group-block {
+  margin-bottom: 24px;
+}
+
+.group-title {
+  margin: 0 0 8px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.group-table {
+  width: 100%;
+  max-width: 900px;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.group-table th,
+.group-table td {
+  border: 1px solid var(--border);
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.group-table th:first-child {
+  text-align: left;
+  min-width: 140px;
+}
+
+.group-table .diag {
+  background: #10131f;
+}
+
+.group-table .empty {
+  background: #05060c;
+}
+
+.group-table .wins,
+.group-table .rank {
+  font-weight: 600;
+}
+
+
+
+
+
+/* ───────── TABLOU – GLOBAL ───────── */
+
+.bracket-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.bracket-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+/* ───────── GRUPE – CARDURI GEN ITF ───────── */
+
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.group-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.group-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.group-card__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.group-card__subtitle {
+  font-size: 0.85rem;
+  color: #aeb3bd;
+}
+
+/* lista de jucători + rank */
+
+.group-players {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.group-player-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.group-player-rank {
+  min-width: 26px;
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 999px;
+  background: rgba(0, 255, 127, 0.08);
+  border: 1px solid rgba(0, 255, 127, 0.3);
+}
+
+.group-player-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-player-stats {
+  font-size: 0.78rem;
+  color: #aeb3bd;
+}
+
+/* meciuri din grupă */
+
+.group-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.group-match {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.01);
+  padding: 6px 8px;
+  font-size: 0.85rem;
+}
+
+.group-match__teams {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.group-match__meta {
+  font-size: 0.78rem;
+  color: #aeb3bd;
+}
+
+/* ───────── ELIMINATORIU – COLUMNE PE RUNDE ───────── */
+
+.ko-bracket {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.ko-round {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ko-round__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #aeb3bd;
+}
+
+.ko-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ko-match {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 8px 10px;
+  font-size: 0.86rem;
+}
+
+.ko-match__player {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ko-match__player + .ko-match__player {
+  margin-top: 2px;
+}
+
+.ko-match__player--winner {
+  font-weight: 600;
+}
+
+.ko-match__score {
+  margin-top: 3px;
+  font-size: 0.78rem;
+  color: #aeb3bd;
+}
+
+/* ───────── PROGRAM MECIURI ───────── */
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.schedule-card {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+.schedule-card h4 {
+  margin: 0 0 4px;
+  font-size: 0.98rem;
+}
+
+.schedule-card p {
+  margin: 0;
+}
+
+.schedule-card p + p {
+  margin-top: 2px;
+}
+
+
+.btn--danger {
+  border-color: #f97373;
+  color: #fecaca;
+}
+
+.btn--danger:hover {
+  border-color: #ef4444;
+  color: #fee2e2;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+
+
+.elim-bracket {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.elim-match {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border, #dde3ea);
+  border-radius: 12px;
+  background: #fff;
+}
+
+/* linia care "leagă" meciul de runda următoare (doar ca efect vizual) */
+.elim-match::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  width: 20px;
+  height: 1px;
+  border-top: 1px solid var(--border, #dde3ea);
+}
+
+.elim-slot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.elim-seed {
+  font-size: 0.8rem;
+  color: #aeb3bd;
+  min-width: 32px;
+  text-align: right;
+}
+
+.elim-slot input {
+  flex: 1;
+}
+
+
+
+
+/* ───────── TABLOU ELIMINATORIU (ADMIN) ───────── */
+
+.elim-bracket {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+/* o pereche de seed-uri + caseta de runda următoare */
+.elim-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* caseta din stânga care conține cele 2 linii (#1 si #2) */
+.elim-match-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid var(--border, #dde3ea);
+}
+
+/* paranteza care leagă cei doi jucători (exact ca în tablourile clasice) */
+.elim-match-box::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  border-top: 1px solid var(--border, #dde3ea);
+}
+
+/* fiecare linie (seed + input) */
+.elim-player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* numărul de seed (#1, #2, ...) */
+.elim-seed {
+  font-size: 0.8rem;
+  color: #aeb3bd;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* inputul cu numele echipei */
+.elim-player input {
+  flex: 1;
+}
+
+/* partea din dreapta: casetă goală pentru runda următoare */
+.elim-next-box {
+  position: relative;
+  width: 180px;
+  height: 32px;
+}
+
+/* dreptunghiul de runda următoare + liniile de legătură */
+.elim-next-slot {
+  position: absolute;
+  inset: 0;
+  margin: auto 0;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #dde3ea);
+  background: #f8fafc;
+}
+
+/* linia care vine din stânga */
+.elim-next-box::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  border-top: 1px solid var(--border, #dde3ea);
+}
+
+
+
+
+/* ---- LAYOUT GLOBAL ---- */
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+}
+
+/* container cu padding lateral confortabil pe mobile */
+.container {
+  width: min(1120px, 100% - 2.5rem); /* ~20px padding pe fiecare parte pe telefon */
+  margin-inline: auto;
+}
+
+/* secțiuni principale */
+.section {
+  padding-block: 3rem 4rem;
+}
+
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+  line-height: 1.2;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+
+}
+
+
+
+
+/* HERO general */
+.hero {
+  position: relative;
+  min-height: calc(100vh - 72px); /* aproape full screen sub navbar */
+  display: flex;
+  align-items: center;
+}
+
+.hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* textul să nu fie prea lat pe desktop */
+.hero__text {
+  max-width: 520px;
+}
+
+.hero__text .sub {
+  font-size: 1rem;
+  color: #aeb3bd;
+}
+
+/* imaginea */
+.hero__image {
+  flex: 0 0 auto;
+}
+
+/* ---- MOBILE & TABLETĂ ---- */
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding-block: 3rem 3.5rem;
+  }
+
+  .hero__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 24px;
+  }
+
+  .hero__image {
+    align-self: center;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .hero__image img {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 2.1rem;
+  }
+
+  .hero__text .sub {
+    font-size: 0.95rem;
+  }
+}
+
+/* nav lipit frumos de margini pe telefon */
+.nav {
+  padding-block: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .nav .container {
+    width: min(1120px, 100% - 2rem); /* un pic mai strâns la nav */
+  }
+}
+
+/* grila de carduri să devină 1 coloană pe mobil */
+.cards {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+
+

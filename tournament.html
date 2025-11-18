@@ -1,0 +1,60 @@
+
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SunTennis — Turneu</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/">Sun<span>Tennis</span></a>
+      <nav class="nav__links">
+        <a href="/">Acasă</a>
+        <a href="/tournament.html">Vezi turnee</a>
+          <a href="/program.html">Program</a>
+          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+          <a href="/login.html" class="btn btn--primary">Login</a>
+      </nav>
+    </div>
+  </header>
+<main class="container section">
+  <h2 id="tName">Tenis Club Sun</h2>
+  <p id="tMeta" style="color:#aeb3bd"></p>
+
+  <!-- SELECTOR CATEGORIE + link Program -->
+  <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <a href="/tournament.html?cat=1"
+       class="btn btn--ghost"
+       id="tCat1Btn">
+      Categorie 1
+    </a>
+    <a href="/tournament.html?cat=2"
+       class="btn btn--ghost"
+       id="tCat2Btn">
+      Categorie 2
+    </a>
+    <a href="/program.html">Program</a>
+  </div>
+
+  <section class="bracket-wrapper">
+    <div class="bracket-title-row">
+      <h3>Tablou</h3>
+      <!-- aici apare textul Format: Grupe / Eliminatoriu -->
+      <span id="tFormat" style="font-size:0.85rem;color:#aeb3bd"></span>
+    </div>
+    <div id="bracket"></div>
+  </section>
+
+  <h3 style="margin-top:24px">Program meciuri</h3>
+  <div id="schedule" class="schedule-grid"></div>
+</main>
+
+
+
+
+  <script type="module" src="/src/tournament.js"></script>
+</body>
+</html>
