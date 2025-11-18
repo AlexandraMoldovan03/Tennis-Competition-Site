@@ -7,18 +7,28 @@
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <header class="nav">
-    <div class="container nav__inner">
-      <a class="logo" href="/">Sun<span>Tennis</span></a>
-      <nav class="nav__links">
-        <a href="/">Acasă</a>
-        <a href="/tournament.html">Vezi turnee</a>
+ <header class="nav">
+      <div class="container nav__inner">
+        <a class="logo" href="/">Sun<span>Tennis</span></a>
+
+        <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <nav class="nav__links" data-menu>
+          <a href="/tournament.html">Vezi turnee</a>
           <a href="/program.html">Program</a>
           <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
           <a href="/login.html" class="btn btn--primary">Login</a>
-      </nav>
-    </div>
-  </header>
+        </nav>
+      </div>
+    </header>
 
   <main class="container section">
     <h2>Program meciuri — toate categoriile</h2>
@@ -27,7 +37,7 @@
     </p>
     <div id="programList"></div>
   </main>
-
+  <script type="module" src="/src/main.js"></script>
   <script type="module" src="/src/program.js"></script>
 </body>
 </html>

@@ -1,9 +1,4 @@
 
-:root{
-  --bg:#0a0a0f; --bg-2:#0e0e15; --ink:#f3f5f8; --muted:#aeb3bd;
-  --card:#13131c; --border:#232335; --accent:#9EEA63; --accent-ink:#0b1b0b;
-  --primary:#9EEA63; --ghost:#ffffff0f;
-}
 *{box-sizing:border-box} html,body{height:100%}
 body{margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg) 0%, var(--bg-2) 100%)}
 img{max-width:100%;display:block}
@@ -684,4 +679,211 @@ p {
 
 
 
+/* ───── LIGHT THEME TENIS ───── */
+:root{
+  /* fundal general foarte deschis */
+  --bg:#f5f7fb;
+  --bg-2:#edf2ff;
 
+  /* text */
+  --ink:#111827;
+  --muted:#6b7280;
+
+  /* carduri / panouri */
+  --card:#ffffff;
+  --border:#e2e8f0;
+
+  /* accent „tenis” – verde mingi de tenis */
+  --accent:#8BED63;
+  --accent-ink:#05240e;
+  --primary:#8BED63;
+
+  /* fundal butoane fantomă */
+  --ghost:rgba(22,163,74,0.06);
+}
+
+/* fundal global deschis */
+body{
+  margin:0;
+  font-family:'Poppins',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  line-height:1.6;
+  color:var(--ink);
+  background:var(--bg);
+}
+
+/* navbar alb, semi-transparent pe scroll */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav__links a{
+  color:var(--ink);
+}
+
+/* hero – text închis pe fundal clar peste imaginea de teren */
+.hero{
+  position:relative;
+  min-height:calc(100vh - 72px);
+  display:flex;
+  align-items:center;
+  background-image:url('/court.png');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+.hero__overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.85) 40%, transparent 80%);
+  z-index:-1;
+}
+
+.hero__text .sub{
+  color:var(--muted);
+}
+
+/* container cu padding ok pe mobile */
+.container{
+  width:min(1120px, 100% - 2.5rem);
+  margin-inline:auto;
+}
+
+/* cards / panouri pe fundal alb */
+.card,
+.stat,
+.group-card,
+.schedule-card,
+.ko-match,
+.group-match{
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:0 8px 20px rgba(15,23,42,0.04);
+}
+
+/* stats bar mai deschis */
+.stats{
+  background:#f9fafb;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+/* butoane primary pe verde tenis */
+.btn--primary{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:var(--accent-ink);
+}
+
+/* footer discret */
+.footer{
+  background:#f9fafb;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+}
+
+
+
+
+/* ───── HAMBURGER LIGHT ───── */
+.nav__toggle{
+  display:none;
+  background:#ffffff;
+  border-radius:999px;
+  padding:6px;
+  border:1px solid var(--border);
+  color:#111827;              /* liniile din icon sunt currentColor */
+}
+
+/* pe mobil – arată butonul */
+@media (max-width: 720px){
+  .nav__toggle{
+    display:block;
+  }
+
+  /* meniul mobil: fundal alb, nu închis */
+  .nav__links{
+    position:absolute;
+    right:16px;
+    top:64px;
+    background:#ffffff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:10px;
+    display:none;
+    flex-direction:column;
+    min-width:200px;
+    box-shadow:0 14px 30px rgba(15,23,42,0.18);
+  }
+
+  .nav__links.show{ display:flex; }
+
+  .nav__links a{
+    padding:10px 12px;
+    color:#111827;          /* text închis în meniu */
+  }
+}
+
+
+/* ───── HERO TEXT TUNING ───── */
+.hero__text{
+  max-width: 540px;
+}
+
+/* titlu mai închis, cu umbră fină pentru lizibilitate pe imagine */
+.hero__text h1{
+  color:#111827;
+  text-shadow:0 2px 4px rgba(15,23,42,0.12);
+}
+
+/* cuvântul accentuat rămâne verde „tenis” */
+.hero__text h1 span{
+  color:var(--primary);
+}
+
+/* eyebrow și descriere mai elegante */
+.hero__text .eyebrow{
+  color:var(--primary);
+  text-transform:uppercase;
+  font-size:0.8rem;
+  letter-spacing:0.12em;
+}
+
+.hero__text .sub{
+  color:var(--muted);
+  font-size:0.95rem;
+  max-width: 46ch;
+}
+
+
+
+/* Text alb pe butoanele din copertă (pagina principală) */
+.hero__cta .btn {
+  color: #ffffff;
+}
+
+/* Butonul secundar din copertă: contur alb, fundal transparent */
+.hero__cta .btn--ghost {
+  background: transparent;
+  border: 2px solid #ffffff;
+}
+
+/* Pentru siguranță: butonul verde din copertă rămâne verde cu text alb */
+.hero__cta .btn--primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+
+/* Titlul de pe copertă în alb */
+.hero__text h1 {
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35); /* opțional, ca să se vadă bine pe zgură */
+}
