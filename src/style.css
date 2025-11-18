@@ -594,7 +594,7 @@ p {
 /* HERO general */
 .hero {
   position: relative;
-  min-height: calc(100vh - 72px); /* aproape full screen sub navbar */
+  min-height: calc(100vh - 72px); 
   display: flex;
   align-items: center;
 }
@@ -606,7 +606,7 @@ p {
   gap: 40px;
 }
 
-/* textul să nu fie prea lat pe desktop */
+
 .hero__text {
   max-width: 520px;
 }
@@ -616,7 +616,7 @@ p {
   color: #aeb3bd;
 }
 
-/* imaginea */
+
 .hero__image {
   flex: 0 0 auto;
 }
@@ -654,18 +654,17 @@ p {
   }
 }
 
-/* nav lipit frumos de margini pe telefon */
+
 .nav {
   padding-block: 0.75rem;
 }
 
 @media (max-width: 900px) {
   .nav .container {
-    width: min(1120px, 100% - 2rem); /* un pic mai strâns la nav */
+    width: min(1120px, 100% - 2rem);
   }
 }
 
-/* grila de carduri să devină 1 coloană pe mobil */
 .cards {
   display: grid;
   gap: 16px;

@@ -1,4 +1,3 @@
-// src/env.js – variantă simplă, fără .env.local
 
 export const ENV = {
   VITE_SUPABASE_URL: 'https://wguckoihzasopcbalsia.supabase.co',

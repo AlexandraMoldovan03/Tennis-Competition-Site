@@ -4,7 +4,7 @@ import { supabase } from './lib/supabase.js';
 async function ensureAuth(){
   const { data: { session } } = await supabase.auth.getSession();
   if(!session){
-    // nu e logat -> acasă
+    
     window.location.href = '/';
     return;
   }

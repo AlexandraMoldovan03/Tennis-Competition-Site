@@ -20,14 +20,14 @@ if (toggle && menu) {
 
 // ----------------- AUTH (MODAL) -----------------
 const authModal = document.querySelector('#authModal');
-const btnLogin = document.querySelector('#btnLogin');        // poate fi null pe home
+const btnLogin = document.querySelector('#btnLogin');       
 const btnDashboard = document.querySelector('#btnDashboard');
 const authForm = document.querySelector('#authForm');
 const authEmail = document.querySelector('#authEmail');
 const authPass = document.querySelector('#authPass');
 const authTitle = document.querySelector('#authTitle');
 
-let mode = 'login'; // 'login' | 'register'
+let mode = 'login'; 
 
 function openAuth() {
   if (!authModal) return;
@@ -41,7 +41,7 @@ function closeAuth() {
   document.body.style.overflow = '';
 }
 
-// Deschide modal doar dacă avem buton și modal în pagina asta
+
 if (btnLogin && authModal) {
   btnLogin.addEventListener('click', (e) => {
     e.preventDefault();
@@ -109,12 +109,12 @@ async function refreshAuthUI() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Dashboard în meniu
+  
   if (btnDashboard) {
     btnDashboard.style.display = session ? '' : 'none';
   }
 
-  // Dacă nu avem buton de login cu id (#btnLogin), nu mai facem nimic
+  
   if (!btnLogin) return;
 
   if (session) {
@@ -130,8 +130,7 @@ async function refreshAuthUI() {
     btnLogin.textContent = 'Login';
     btnLogin.classList.add('btn--primary');
     btnLogin.onclick = (e) => {
-      // dacă ai modal de login, îl deschidem,
-      // altfel poți redirecționa spre /login.html
+      
       if (authModal) {
         e.preventDefault();
         openAuth();

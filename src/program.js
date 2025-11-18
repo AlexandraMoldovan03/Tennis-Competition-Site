@@ -1,6 +1,6 @@
 import { supabase } from './lib/supabase.js';
 
-// mic helper local – la fel ca în admin.js
+
 function teamLabel(t) {
   if (!t) return 'TBD';
   if (t.player1 && t.player2) return `${t.player1} & ${t.player2}`;
@@ -27,7 +27,7 @@ async function loadProgram() {
   const wrap = document.querySelector('#programList');
   if (!wrap) return;
 
-  // 1. luăm turneele pentru cele 2 slug-uri
+
   const { data: tournaments, error: tErr } = await supabase
     .from('tournaments')
     .select('id, slug, name')
@@ -52,7 +52,7 @@ async function loadProgram() {
     return;
   }
 
-  // 2. luăm echipele pentru aceste turnee
+
   const { data: teams, error: teamsErr } = await supabase
     .from('teams')
     .select('*')
@@ -67,7 +67,7 @@ async function loadProgram() {
   const teamById = {};
   teams.forEach(t => { teamById[t.id] = t; });
 
-  // 3. luăm toate meciurile, ordonate după data programării
+
   const { data: matches, error: mErr } = await supabase
     .from('matches')
     .select('*')

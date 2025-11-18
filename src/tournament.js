@@ -202,7 +202,7 @@ function renderKnockoutBracket(container, teams, matches) {
   const rounds = {};
 
   (matches || []).forEach((m) => {
-    if (m.group_name) return; // ignorăm meciurile de grupe
+    if (m.group_name) return; 
     const r = m.round || 1;
     if (!rounds[r]) rounds[r] = [];
     rounds[r].push(m);
@@ -273,7 +273,6 @@ function renderRoundColumn(round, matches, teamById) {
 }
 
 function getRoundLabel(roundNumber, matchesInRound) {
-  // poți rafina dacă vrei
   if (matchesInRound === 1 && roundNumber > 1) return 'Finală';
   if (matchesInRound === 2) return 'Semifinale';
   if (matchesInRound === 4) return 'Sferturi';
