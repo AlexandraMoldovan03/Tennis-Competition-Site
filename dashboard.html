@@ -13,27 +13,29 @@
 </head>
 <body>
  <header class="nav">
-      <div class="container nav__inner">
-        <a class="logo" href="/">Sun<span>Tennis</span></a>
+  <div class="container nav__inner">
+    <a class="logo" href="/">Sun<span>Tennis</span></a>
 
-        <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 6h18M3 12h18M3 18h18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round" />
-          </svg>
-        </button>
+    <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round" />
+      </svg>
+    </button>
 
-        <nav class="nav__links" data-menu>
-          <a href="/tournament.html">Vezi turnee</a>
-          <a href="/program.html">Program</a>
-          <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
-          <a href="/login.html" class="btn btn--primary">Login</a>
-        </nav>
-      </div>
-    </header>
+    <nav class="nav__links" data-menu>
+      <a href="/tournament.html">Vezi turnee</a>
+      <a href="/program.html">Program</a>
+      <a href="/dashboard.html" id="btnDashboard">Dashboard</a>
+      <!-- AICI schimbăm Login cu Logout -->
+      <a href="#" class="btn btn--ghost" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
 
   <main class="dash">
     <h1>Dashboard</h1>

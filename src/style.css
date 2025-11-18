@@ -102,7 +102,20 @@ img{max-width:100%;display:block}
 .auth__tab{flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--ghost);color:var(--ink);cursor:pointer;font-weight:700}
 .auth__tab--active{background:var(--primary);border-color:var(--primary);color:#0b1d0b}
 .auth__field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-.auth__field input{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#161624;color:var(--ink)}
+.auth__field input{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #d1d5db;   /* gri deschis, profesionist */
+  background:#ffffff;          /* ALB */
+  color:#111827;               /* text închis */
+}
+
+.auth__field input::placeholder{
+  color:#9ca3af;               /* gri plăcut pt placeholder */
+}
+
+
+
 .auth__hint{color:var(--muted);font-size:12px;margin:8px 0 0}
 
 
@@ -126,7 +139,17 @@ img{max-width:100%;display:block}
 .auth__tab--active{ background:var(--primary); border-color:var(--primary); color:#0b1d0b; }
 
 .auth__field{ display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
-.auth__field input{ padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:#161624; color:var(--ink); }
+.auth__field input{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #d1d5db;   /* gri deschis, profesionist */
+  background:#ffffff;          /* ALB */
+  color:#111827;               /* text închis */
+}
+
+.auth__field input::placeholder{
+  color:#9ca3af;               /* gri plăcut pt placeholder */
+}
 .auth__hint{ color:var(--muted); font-size:12px; margin:8px 0 0; }
 
 /* === AUTH OVERLAY (div-based, cross-browser) === */
@@ -142,7 +165,17 @@ img{max-width:100%;display:block}
   background:var(--ghost); color:var(--ink); cursor:pointer; font-weight:700}
 .auth__tab--active{background:var(--primary); border-color:var(--primary); color:#0b1d0b}
 .auth__field{display:flex; flex-direction:column; gap:6px; margin-bottom:10px}
-.auth__field input{padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:#161624; color:var(--ink)}
+.auth__field input{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #d1d5db;   /* gri deschis, profesionist */
+  background:#ffffff;          /* ALB */
+  color:#111827;               /* text închis */
+}
+
+.auth__field input::placeholder{
+  color:#9ca3af;               /* gri plăcut pt placeholder */
+}
 .auth__hint{color:var(--muted); font-size:12px; margin:8px 0 0}
 /* ───── Grile grupe (șah) ───── */
 
@@ -777,9 +810,10 @@ body{
 /* butoane primary pe verde tenis */
 .btn--primary{
   background:var(--primary);
+  color:#ffffff;           /* TEXT ALB */
   border-color:var(--primary);
-  color:var(--accent-ink);
 }
+
 
 /* footer discret */
 .footer{
@@ -886,4 +920,33 @@ body{
 .hero__text h1 {
   color: #ffffff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35); /* opțional, ca să se vadă bine pe zgură */
+}
+
+
+
+
+/* === FORCE WHITE INPUTS ON AUTH FORMS === */
+.auth__card input,
+.auth__field input,
+.login-card input,
+.register-card input,
+input[type="email"],
+input[type="password"] {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+
+/* placeholder gri plăcut */
+.auth__card input::placeholder,
+.auth__field input::placeholder {
+  color: #9ca3af !important;
+}
+
+/* fix pentru Safari / Chrome autofill galben */
+.auth__card input:-webkit-autofill,
+.auth__field input:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #111827 !important;
 }

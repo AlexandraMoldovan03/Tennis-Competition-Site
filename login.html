@@ -54,7 +54,7 @@
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 
   const msg = document.querySelector('#msg');
-  msg.textContent = 'JS inline OK ✔';
+  // msg.textContent = 'JS inline OK ✔';
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
