@@ -31,9 +31,11 @@ async function loadTournament() {
     return;
   }
 
-  const catLabel = CURRENT_CAT === '1' ? 'Categorie 1' : `Categorie ${CURRENT_CAT}`;
+ const catLabel = CURRENT_CAT === '1' ? 'Nivel 8' : 'Nivel 6';
+
 document.querySelector('#tName').textContent =
   (t.name || 'Tenis Club Sun ') + ' — ' + catLabel;
+
 
   document.querySelector('#tMeta').textContent =
     `${t.location || ''} ${t.start_date || ''} ${t.end_date || ''}`.trim();

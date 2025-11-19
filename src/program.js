@@ -8,8 +8,8 @@ function teamLabel(t) {
 }
 
 const CATEGORY_SLUGS = [
-  { slug: 'suntennis-2025',   label: 'Categorie 1' },
-  { slug: 'suntennis-2025-2', label: 'Categorie 2' },
+  { slug: 'suntennis-2025',   label: 'Nivel 8' },
+  { slug: 'suntennis-2025-2', label: 'Nivel 6' },
 ];
 
 function formatDateTime(iso) {

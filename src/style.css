@@ -950,3 +950,64 @@ input[type="password"] {
   box-shadow: 0 0 0 1000px #ffffff inset !important;
   -webkit-text-fill-color: #111827 !important;
 }
+
+
+
+
+/* === TOATE INPUT-URILE & TEXTAREA SĂ FIE ALBE === */
+input,
+textarea,
+select {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+
+/* pentru input-urile din tabel (tablou / grupe) – doar ca să fim siguri */
+.group-table input,
+.elim-player input,
+.elim-slot input {
+  background: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* placeholder gri plăcut peste tot */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+/* fix pentru autofill galben în Chrome/Safari */
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #111827 !important;
+}
+
+
+
+
+/* 1) Pătrățelele negre din tabelul grupei -> ALB */
+.group-table .diag,
+.group-table .empty {
+  background: #ffffff;      /* alb */
+}
+
+/* 2) Orice formular în care scrii să fie ALB */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  background: #ffffff !important;   /* fundal alb */
+  color: #111827 !important;        /* text închis */
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+
+/* Placeholder gri plăcut peste tot */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
