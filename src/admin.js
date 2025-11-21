@@ -702,6 +702,15 @@ async function loadMatches() {
   renderMatches(data || []);
 }
 
+
+function toLocalInputValue(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);                       // interpretează ts ca UTC
+  const tzOff = d.getTimezoneOffset();         // minute
+  const local = new Date(d.getTime() - tzOff * 60000);
+  return local.toISOString().slice(0, 16);     // YYYY-MM-DDTHH:MM
+}
+
 function renderMatches(matches) {
   const wrap = document.querySelector('#matchesList');
   if (!wrap) return;
@@ -724,6 +733,7 @@ function renderMatches(matches) {
     const tag = m.group_name
       ? `Grupa ${m.group_name}`
       : `Rundă ${m.round || 1}`;
+
     return `
       <div class="card" style="gap:6px;margin-bottom:8px">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
@@ -750,21 +760,29 @@ function renderMatches(matches) {
 
           <label>
             <span style="font-size:0.8rem;color:#aeb3bd">Data/Ora</span>
-            <input data-id="${m.id}" data-k="scheduled_at"
-                   type="datetime-local"
-                   value="${m.scheduled_at ? new Date(m.scheduled_at).toISOString().slice(0,16) : ''}">
+            <input
+              data-id="${m.id}"
+              data-k="scheduled_at"
+              type="datetime-local"
+              value="${toLocalInputValue(m.scheduled_at)}">
           </label>
 
           <label>
             <span style="font-size:0.8rem;color:#aeb3bd">Teren</span>
-            <input data-id="${m.id}" data-k="court" placeholder="Teren"
-                   value="${m.court || ''}">
+            <input
+              data-id="${m.id}"
+              data-k="court"
+              placeholder="Teren"
+              value="${m.court || ''}">
           </label>
 
           <label>
             <span style="font-size:0.8rem;color:#aeb3bd">Scor</span>
-            <input data-id="${m.id}" data-k="score" placeholder="Scor ex: 6-3 6-2"
-                   value="${m.score || ''}">
+            <input
+              data-id="${m.id}"
+              data-k="score"
+              placeholder="Scor ex: 6-3 6-2"
+              value="${m.score || ''}">
           </label>
 
           <label>
@@ -776,101 +794,58 @@ function renderMatches(matches) {
           </label>
 
           <button class="btn btn--primary"
-        data-save="${m.id}"
-        data-round="${m.round || 1}"
-        data-pos="${m.position || 1}">
-  Salvează
-</button>
-
+                  data-save="${m.id}"
+                  data-round="${m.round || 1}"
+                  data-pos="${m.position || 1}">
+            Salvează
+          </button>
         </div>
       </div>
     `;
   }).join('');
 
-  // Save
-  // Save
-wrap.querySelectorAll('[data-save]').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    const id       = btn.getAttribute('data-save');
-    const round    = parseInt(btn.getAttribute('data-round') || '1', 10);
-    const position = parseInt(btn.getAttribute('data-pos')   || '1', 10);
+  // SAVE
+  wrap.querySelectorAll('[data-save]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id       = btn.getAttribute('data-save');
+      const round    = parseInt(btn.getAttribute('data-round') || '1', 10);
+      const position = parseInt(btn.getAttribute('data-pos')   || '1', 10);
 
-    const inputs = wrap.querySelectorAll(`[data-id="${id}"]`);
-    const patch = {};
+      const inputs = wrap.querySelectorAll(`[data-id="${id}"]`);
+      const patch = {};
 
-    inputs.forEach(i => {
-      const key = i.getAttribute('data-k');
-      let val = i.value || null;
+      inputs.forEach(i => {
+        const key = i.getAttribute('data-k');
+        let val = i.value || null;
 
-      if (key === 'scheduled_at' && val) {
-        val = new Date(val).toISOString();
+        if (key === 'scheduled_at' && val) {
+          // din local → UTC pentru timestamptz
+          val = new Date(val).toISOString();
+        }
+
+        if (key === 'team1_id' || key === 'team2_id' || key === 'winner_id') {
+          val = val || null;
+        }
+
+        patch[key] = val;
+      });
+
+      const { error } = await supabase.from('matches').update(patch).eq('id', id);
+      if (error) {
+        console.error(error);
+        alert('Nu am putut salva meciul: ' + error.message);
+        return;
       }
 
-      if (key === 'team1_id' || key === 'team2_id' || key === 'winner_id') {
-        val = val || null;
+      if (patch.winner_id) {
+        await propagateWinner(round, position, patch.winner_id);
       }
-      patch[key] = val;
+
+      await loadMatches();
     });
-
-    const { error } = await supabase.from('matches').update(patch).eq('id', id);
-    if (error) {
-      console.error(error);
-      alert('Nu am putut salva meciul: ' + error.message);
-      return;
-    }
-
-    // dacă avem câștigător ales, îl propagăm în runda următoare
-    if (patch.winner_id) {
-      await propagateWinner(round, position, patch.winner_id);
-    }
-
-    await loadMatches();
   });
-});
 
-// duce câștigătorul din meciul (round, position) în meciul corespunzător din runda următoare
-// duce câștigătorul din meciul (round, position) în meciul corespunzător din runda următoare
-async function propagateWinner(round, position, winnerId) {
-  const bracketSize = tournament.bracket_size || teams.filter(t => !t.group_name).length;
-  const totalRounds = Math.log2(bracketSize || 1);
-
-  if (!Number.isInteger(totalRounds)) return;
-  if (round >= totalRounds) return; // deja în finală
-
-  const nextRound = round + 1;
-  const nextPos   = Math.ceil(position / 2);
-  const isTop     = position % 2 === 1;  // impar -> team1, par -> team2
-  const field     = isTop ? 'team1_id' : 'team2_id';
-
-  const { data: nextMatch, error } = await supabase
-    .from('matches')
-    .select('id, team1_id, team2_id')
-    .eq('tournament_id', tournament.id)
-    .is('group_name', null)          // 👈 AICI era .eq, acum e .is
-    .eq('round', nextRound)
-    .eq('position', nextPos)
-    .single();
-
-  if (error || !nextMatch) {
-    console.error('Nu am găsit meciul din runda următoare pentru propagare', error);
-    return;
-  }
-
-  const patch = {};
-  patch[field] = winnerId;
-
-  const { error: upErr } = await supabase
-    .from('matches')
-    .update(patch)
-    .eq('id', nextMatch.id);
-
-  if (upErr) {
-    console.error('Nu am putut actualiza meciul următor', upErr);
-  }
-}
-
-
-  // Delete
+  // DELETE (rămâne la fel ca înainte)
   wrap.querySelectorAll('[data-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-del');
@@ -912,10 +887,15 @@ async function handleAddMatch() {
     return;
   }
 
-  let scheduled_at = null;
-  if (when) {
-    scheduled_at = new Date(when).toISOString();
-  }
+
+
+  //let scheduled_at = when || null;   
+
+ let scheduled_at = null;
+if (when) {
+  scheduled_at = new Date(when).toISOString();
+}
+
 
   const { data: existing } = await supabase
     .from('matches')

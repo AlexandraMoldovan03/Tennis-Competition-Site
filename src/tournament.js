@@ -147,8 +147,8 @@ function renderSingleGroupCard(groupName, data, teamById) {
     })
     .join('');
 
-  const fmtDate = (d) =>
-    d ? new Date(d).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '—';
+const fmtDate = (d) =>
+  d ? d.replace('T', ' ').slice(0, 16) : '—';   // 2025-11-21 10:00
 
   const matchesHtml = (data.matches || [])
     .map((m) => {
