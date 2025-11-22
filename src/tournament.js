@@ -31,7 +31,7 @@ async function loadTournament() {
     return;
   }
 
- const catLabel = CURRENT_CAT === '1' ? 'Nivel 8' : 'Nivel 6';
+ const catLabel = CURRENT_CAT === '1' ? 'Grupe 8' : ' Eliminatoriu 8';
 
 document.querySelector('#tName').textContent =
   (t.name || 'Tenis Club Sun ') + ' — ' + catLabel;
@@ -57,15 +57,23 @@ document.querySelector('#tName').textContent =
     .eq('tournament_id', t.id);
 
   const bracketEl  = document.querySelector('#bracket');
-  const scheduleEl = document.querySelector('#schedule');
+const scheduleEl = document.querySelector('#schedule');
 
-  if (t.format === 'groups') {
-    renderGroupsBracket(bracketEl, teams, matches);
-  } else {
-    renderKnockoutBracket(bracketEl, teams, matches);
-  }
+// curățăm containerul înainte
+if (bracketEl) bracketEl.innerHTML = '';
 
-  renderSchedule(scheduleEl, teams, matches);
+// 1) Grupele (tabloul de șah)
+renderGroupsBracket(bracketEl, teams, matches);
+
+// 2) Tabloul eliminatoriu
+renderKnockoutBracket(bracketEl, teams, matches);
+
+// Programul (grupe + eliminatoriu)
+renderSchedule(scheduleEl, teams, matches);
+
+
+
+  
 }
 
 // ───────────────────────────────────────────────────────
@@ -90,65 +98,168 @@ function renderGroupsBracket(container, teams, matches) {
   );
 
   if (!entries.length) {
-    container.innerHTML =
-      '<p style="color:#aeb3bd">Grupele nu au fost încă setate.</p>';
+    // dacă nu e deja nimic în bracket, afișăm mesaj de info
+    if (!container.innerHTML.trim()) {
+      container.innerHTML =
+        '<p style="color:#aeb3bd">Grupele nu au fost încă setate.</p>';
+    }
     return;
   }
 
   const teamById = new Map(teams.map((t) => [t.id, t]));
 
-  container.innerHTML = `
-    <div class="group-grid">
-      ${entries
-        .map(([gName, data]) =>
-          renderSingleGroupCard(gName, data, teamById)
-        )
-        .join('')}
-    </div>
+  const html = `
+    <section class="bracket-section">
+      <h3 class="section-title">Grupe (tabloul de șah)</h3>
+      <div class="group-grid">
+        ${entries
+          .map(([gName, data]) =>
+            renderSingleGroupCard(gName, data, teamById)
+          )
+          .join('')}
+      </div>
+    </section>
   `;
+
+  // IMPORTANT: adăugăm, nu rescriem
+  container.insertAdjacentHTML('beforeend', html);
 }
+
+
+// calculează game-urile dintr-un scor de tip "6-3 4-6 10-6"
+function parseScore(scoreStr) {
+  if (!scoreStr) return { t1Games: 0, t2Games: 0 };
+
+  let t1Games = 0;
+  let t2Games = 0;
+
+  const sets = scoreStr.split(/\s+/); // ex: "6-3 4-6 10-6"
+
+  sets.forEach(set => {
+    // prinde și forme gen "7-6(5)"
+    const m = set.match(/(\d+)[^\d]+(\d+)/);
+    if (!m) return;
+
+    const g1 = parseInt(m[1], 10);
+    const g2 = parseInt(m[2], 10);
+
+    if (!Number.isNaN(g1) && !Number.isNaN(g2)) {
+      t1Games += g1;
+      t2Games += g2;
+    }
+  });
+
+  return { t1Games, t2Games };
+}
+
+
 
 function renderSingleGroupCard(groupName, data, teamById) {
   const groupTeams = Array.from(data.teamIds)
     .map((id) => teamById.get(id))
     .filter(Boolean);
 
-  // număr victorii pe echipă
-  const wins = {};
+  // 1. câte meciuri ar trebui să fie în grupă (fiecare cu fiecare)
+  const n = groupTeams.length;
+  const totalMatchesPossible = (n * (n - 1)) / 2;
+
+  // 2. câte meciuri au winner setat
+  const finishedMatches = (data.matches || []).filter(
+    (m) => m.winner_id
+  ).length;
+
+  // 3. grupa e completă doar dacă toate meciurile au winner
+  const groupFinished = finishedMatches === totalMatchesPossible;
+
+  // stats per echipă: victorii + game-uri
+  const stats = {};
+  const ensureStats = (id) => {
+    if (!stats[id]) {
+      stats[id] = {
+        wins: 0,
+        gamesFor: 0,
+        gamesAgainst: 0,
+      };
+    }
+    return stats[id];
+  };
+
+  // parcurgem meciurile din grupă
   (data.matches || []).forEach((m) => {
+    const t1 = teamById.get(m.team1_id);
+    const t2 = teamById.get(m.team2_id);
+    if (!t1 || !t2) return;
+
+    const s1 = ensureStats(t1.id);
+    const s2 = ensureStats(t2.id);
+
+    // victorii
     if (m.winner_id) {
-      wins[m.winner_id] = (wins[m.winner_id] || 0) + 1;
+      if (m.winner_id === t1.id) s1.wins += 1;
+      else if (m.winner_id === t2.id) s2.wins += 1;
+    }
+
+    // game-uri din scor
+    if (m.score) {
+      const { t1Games, t2Games } = parseScore(m.score);
+      s1.gamesFor     += t1Games;
+      s1.gamesAgainst += t2Games;
+      s2.gamesFor     += t2Games;
+      s2.gamesAgainst += t1Games;
     }
   });
 
-  // clasament simplu după nr. de victorii
-  const withWins = groupTeams
-    .map((t) => ({
-      team: t,
-      wins: wins[t.id] || 0,
-    }))
-    .sort((a, b) => b.wins - a.wins);
+  // listă cu statistici + sortare după wins, game diff, gamesFor
+  const withStats = groupTeams
+    .map((team) => {
+      const st = stats[team.id] || { wins: 0, gamesFor: 0, gamesAgainst: 0 };
+      const diff = st.gamesFor - st.gamesAgainst;
+      return {
+        team,
+        wins: st.wins,
+        gamesFor: st.gamesFor,
+        gamesAgainst: st.gamesAgainst,
+        diff,
+      };
+    })
+    .sort((a, b) => {
+      // 1) mai multe victorii
+      if (b.wins !== a.wins) return b.wins - a.wins;
+      // 2) game-averaj mai mare
+      if (b.diff !== a.diff) return b.diff - a.diff;
+      // 3) mai multe game-uri câștigate
+      if (b.gamesFor !== a.gamesFor) return b.gamesFor - a.gamesFor;
+      // 4) fallback alfabetic
+      return (a.team.player1 || '').localeCompare(b.team.player1 || '', 'ro');
+    });
 
+  // map ID -> loc (1, 2, 3, ...) – dar le afișăm doar dacă grupa e completă
   const rankMap = {};
-  withWins.forEach((x, idx) => {
+  withStats.forEach((x, idx) => {
     rankMap[x.team.id] = idx + 1;
   });
 
-  const playersHtml = withWins
-    .map(({ team, wins }) => {
-      const r = rankMap[team.id] ?? '';
+  const playersHtml = withStats
+    .map(({ team, wins, diff, gamesFor, gamesAgainst }) => {
+      const r = groupFinished ? (rankMap[team.id] ?? '') : '-';
+      const diffLabel = diff > 0 ? `+${diff}` : `${diff}`;
       return `
         <div class="group-player-row">
           <div class="group-player-rank">${r}</div>
           <div class="group-player-name">${escapeHtml(teamLabel(team))}</div>
-          <div class="group-player-stats">${wins} vict.</div>
+          <div class="group-player-stats">
+            ${wins} vict. • GA ${diffLabel}
+            <span style="color:#aeb3bd;font-size:0.75rem">
+              (${gamesFor}-${gamesAgainst})
+            </span>
+          </div>
         </div>
       `;
     })
     .join('');
 
-const fmtDate = (d) =>
-  d ? d.replace('T', ' ').slice(0, 16) : '—';   // 2025-11-21 10:00
+  const fmtDate = (d) =>
+    d ? d.replace('T', ' ').slice(0, 16) : '—';
 
   const matchesHtml = (data.matches || [])
     .map((m) => {
@@ -180,6 +291,9 @@ const fmtDate = (d) =>
           <div class="group-card__subtitle">
             ${groupTeams.length} echipe • ${data.matches.length} meciuri
           </div>
+          <div class="group-card__subtitle" style="font-size:0.75rem;color:#aeb3bd">
+            Clasament: victorii, apoi game-averaj, apoi game-uri câștigate.
+          </div>
         </div>
       </header>
 
@@ -194,6 +308,7 @@ const fmtDate = (d) =>
   `;
 }
 
+
 // ───────────────────────────────────────────────────────
 // ELIMINATORIU – COLUMNE PE RUNDE
 
@@ -204,7 +319,7 @@ function renderKnockoutBracket(container, teams, matches) {
   const rounds = {};
 
   (matches || []).forEach((m) => {
-    if (m.group_name) return; 
+    if (m.group_name) return; // doar eliminatoriu (fără group_name)
     const r = m.round || 1;
     if (!rounds[r]) rounds[r] = [];
     rounds[r].push(m);
@@ -215,21 +330,30 @@ function renderKnockoutBracket(container, teams, matches) {
   );
 
   if (!entries.length) {
-    container.innerHTML =
-      '<p style="color:#aeb3bd">Tabloul eliminatoriu nu a fost încă setat.</p>';
+    // doar dacă nu există nici grupe și nici tablou
+    if (!container.innerHTML.trim()) {
+      container.innerHTML =
+        '<p style="color:#aeb3bd">Tabloul eliminatoriu nu a fost încă setat.</p>';
+    }
     return;
   }
 
-  container.innerHTML = `
-    <div class="ko-bracket">
-      ${entries
-        .map(([round, list]) =>
-          renderRoundColumn(round, list, teamById)
-        )
-        .join('')}
-    </div>
+  const html = `
+    <section class="bracket-section">
+      <h3 class="section-title">Tablou eliminatoriu</h3>
+      <div class="ko-bracket">
+        ${entries
+          .map(([round, list]) =>
+            renderRoundColumn(round, list, teamById)
+          )
+          .join('')}
+      </div>
+    </section>
   `;
+
+  container.insertAdjacentHTML('beforeend', html);
 }
+
 
 function renderRoundColumn(round, matches, teamById) {
   const label = getRoundLabel(Number(round), matches.length);

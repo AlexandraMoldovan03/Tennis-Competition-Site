@@ -1018,4 +1018,4 @@ function markActiveCategory() {
       b1.classList.add('btn--primary');
     }
   }
-}
+}   
